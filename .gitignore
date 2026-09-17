@@ -23,3 +23,13 @@ venv/
 __pycache__/
 .pytest_cache/
 .DS_Store
+
+# Java / Maven
+target/
+*.class
+
+# Vite build output (a built copy is checked in under backend resources)
+frontend/dist/
+
+# Logs
+*.log
