@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: craft-event-backend
+  datasource:
+    # 应用墙钟、JDBC 参数、DB NOW() 全部使用容器/服务器本地时区（生产为 UTC）。
+    # 若部署环境 JVM 与 DB 时区不同，需在启动参数统一 -Duser.timezone，或同时设置 DB_TZ。
+    url: jdbc:mysql://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/craft?useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci&serverTimezone=${DB_TZ:UTC}&useSSL=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+    username: ${DB_USER:craft}
+    password: ${DB_PASSWORD:craft}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 20
+      # 并发合成时等待行锁，超过由数据库报错（绝不静默吞掉）
+      connection-timeout: 10000
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+      continue-on-error: false
+  # LocalDateTime 统一以 ISO-8601（UTC 墙钟）序列化，前端自行本地化展示
+
+craft:
+  scheduler:
+    enabled: true
+  token-ttl-hours: 12
+
+logging:
+  level:
+    com.example.craft: INFO
